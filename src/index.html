@@ -1,0 +1,151 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>StudyBuddy – Lernpartner:innen finden</title>
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+  <!-- App shell -->
+  <div id="app">
+
+    <!-- ===== Header / Navigation ===== -->
+    <header class="topbar" id="topbar" hidden>
+      <div class="brand">
+        <span class="brand-mark">SB</span>
+        <span class="brand-name">StudyBuddy</span>
+      </div>
+      <nav class="nav">
+        <button class="nav-link" data-view="matching">Matching</button>
+        <button class="nav-link" data-view="messages">Nachrichten</button>
+        <button class="nav-link" data-view="profile">Mein Profil</button>
+      </nav>
+      <div class="nav-user">
+        <span id="navUserName" class="nav-username"></span>
+        <button class="btn btn-ghost" id="logoutBtn">Abmelden</button>
+      </div>
+    </header>
+
+    <main class="content">
+
+      <!-- ===== Login (Story A) ===== -->
+      <section class="view view-auth" id="view-login">
+        <div class="auth-card">
+          <div class="auth-head">
+            <span class="brand-mark brand-mark--lg">SB</span>
+            <h1>StudyBuddy</h1>
+            <p class="auth-sub">Finde Lernpartner:innen an deiner Schule.</p>
+          </div>
+          <label class="field">
+            <span>Benutzername</span>
+            <input type="text" id="loginUser" placeholder="z. B. lena" autocomplete="username" />
+          </label>
+          <label class="field">
+            <span>Passwort</span>
+            <input type="password" id="loginPass" placeholder="••••••••" autocomplete="current-password" />
+          </label>
+          <p class="auth-error" id="loginError" hidden></p>
+          <button class="btn btn-primary btn-block" id="loginBtn">Anmelden</button>
+          <p class="auth-hint">Demo-Konten: lena, jonas, mira, sven, aylin · Passwort: <code>demo123</code></p>
+        </div>
+      </section>
+
+      <!-- ===== Matching (Stories G + filter) ===== -->
+      <section class="view" id="view-matching" hidden>
+        <div class="view-head">
+          <h2>Passende Lernpartner:innen</h2>
+          <p class="view-sub">Sortiert nach Übereinstimmung deiner Fächer.</p>
+        </div>
+        <div class="toolbar">
+          <label class="field field--inline">
+            <span>Nach Fach filtern</span>
+            <select id="matchFilter">
+              <option value="">Alle Fächer</option>
+            </select>
+          </label>
+        </div>
+        <div class="match-grid" id="matchGrid"></div>
+        <p class="empty" id="matchEmpty" hidden>Keine passenden Lernpartner:innen gefunden.</p>
+      </section>
+
+      <!-- ===== Messages (Story F + search) ===== -->
+      <section class="view" id="view-messages" hidden>
+        <div class="view-head">
+          <h2>Nachrichten</h2>
+          <p class="view-sub">Schreib jemandem, mit dem du lernen möchtest.</p>
+        </div>
+        <div class="messages-layout">
+          <aside class="thread-list">
+            <label class="field field--search">
+              <input type="search" id="msgSearch" placeholder="Nachrichten oder Namen suchen…" />
+            </label>
+            <ul id="threadList"></ul>
+          </aside>
+          <div class="thread-view">
+            <div class="thread-head" id="threadHead">Wähle links eine Person aus.</div>
+            <div class="thread-body" id="threadBody"></div>
+            <div class="thread-compose" id="threadCompose" hidden>
+              <input type="text" id="msgInput" placeholder="Nachricht schreiben…" />
+              <button class="btn btn-primary" id="msgSend">Senden</button>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ===== Profile (Stories E, C, B) ===== -->
+      <section class="view" id="view-profile" hidden>
+        <div class="view-head">
+          <h2>Mein Profil</h2>
+          <p class="view-sub">Deine Angaben bestimmen, wer dir vorgeschlagen wird.</p>
+        </div>
+        <div class="profile-card">
+          <label class="field">
+            <span>Name</span>
+            <input type="text" id="pfName" />
+          </label>
+          <label class="field">
+            <span>Klasse</span>
+            <input type="text" id="pfClass" placeholder="z. B. IA24a" />
+          </label>
+          <label class="field">
+            <span>Stärken (Fächer, kommagetrennt)</span>
+            <input type="text" id="pfStrengths" placeholder="z. B. Mathe, Physik" />
+          </label>
+          <label class="field">
+            <span>Schwächen (Fächer, kommagetrennt)</span>
+            <input type="text" id="pfWeak" placeholder="z. B. Französisch, Geschichte" />
+          </label>
+          <div class="profile-actions">
+            <button class="btn btn-primary" id="pfSave">Änderungen speichern</button>
+            <button class="btn btn-ghost" id="pfToggle">Profil deaktivieren</button>
+          </div>
+          <p class="profile-status" id="pfStatus" hidden></p>
+        </div>
+      </section>
+
+      <!-- ===== SQL console (for the live demo) ===== -->
+      <section class="view" id="view-sql" hidden>
+        <div class="view-head">
+          <h2>SQL-Konsole <span class="badge">Demo</span></h2>
+          <p class="view-sub">Zeigt, dass echte SQL-Abfragen gegen die SQLite-Datenbank (sql.js) laufen.</p>
+        </div>
+        <textarea id="sqlInput" rows="4">SELECT username, name, class FROM users;</textarea>
+        <button class="btn btn-primary" id="sqlRun">Abfrage ausführen</button>
+        <div class="sql-result" id="sqlResult"></div>
+      </section>
+
+    </main>
+
+    <footer class="appfoot">
+      <span>StudyBuddy · M426 · Team A</span>
+      <button class="link-btn" id="sqlToggle">SQL-Konsole</button>
+    </footer>
+  </div>
+
+  <!-- sql.js from CDN -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/sql.js/1.10.3/sql-wasm.js"></script>
+  <script src="db.js"></script>
+  <script src="app.js"></script>
+</body>
+</html>
